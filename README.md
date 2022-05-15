@@ -4,17 +4,13 @@
 基于对象的 `ScriptUI` 解析器
 
 # 用法
-
-=======
-基于对象的 ScriptUI 解析器
-# 用法
 将 `src` 目录下 的 `scriptUI-parser-min.jsx` 文件中的代码粘贴到自己编写的脚本文件的头部即可。
 # 示例
 
 
 ## example 1
 最小解析：创建一个空白按钮
->>>>>>> 5f060468e8328d98729770c1155c74a1ae75402b
+
 ```javaScript
 this.parseScriptUI({ button: '' });
 ```
