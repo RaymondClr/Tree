@@ -23,8 +23,8 @@ elements.run.onClick = function () {
 };
 ```
 
-- example 3
-- 将事件通过样式写入
+example 3
+将事件通过样式写入
 ```javaScript
 function foo() {
     alert('Yoooooo!');
