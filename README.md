@@ -5,13 +5,13 @@
 # 示例
 
 
-example 1
+## example 1
 最小解析：创建一个空白按钮
 ```javaScript
 this.parseScriptUI({ button: '' });
 ```
 
-example 2
+## example 2
 添加一个节点名称为 "run" 的按钮，并设置事件。
 ```javaScript
 var elements = this.parseScriptUI({
@@ -23,7 +23,7 @@ elements.run.onClick = function () {
 };
 ```
 
-example 3
+## example 3
 将事件通过样式写入
 ```javaScript
 function foo() {
@@ -38,7 +38,7 @@ var elements = this.parseScriptUI({
 });
 ```
 
-example 4
+## example 4
 为按钮添加更多样式
 ```javaScript
 function foo() {
@@ -53,7 +53,7 @@ var elements = this.parseScriptUI({
 });
 ```
 
-example 5
+## example 5
 配置全局主容器的样式。
 ```javaScript
 function foo() {
@@ -70,7 +70,7 @@ var elements = this.parseScriptUI({
 });
 ```
 
-example 6
+## example 6
 配置主容器特性
 config 支持以下参数：
 1、`dockable` 类型：`Boolean`。配置主容器是否可以在AE中停靠，默认为 true。
@@ -94,7 +94,7 @@ var mainWindow = this.parseScriptUI({
 });
 ```
 
-example 7
+## example 7
 完整案例演示。
 ```javaScript
 function foo() {
