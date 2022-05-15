@@ -1,6 +1,6 @@
 # scriptUI-parser
 基于对象的 ScriptUI 解析器
-# 示例
+# 用法
 将 `src` 目录下 的 `scriptUI-parser-min.jsx` 文件中的代码粘贴到自己编写的脚本文件的头部即可。
 # 示例
 ```javaScript
