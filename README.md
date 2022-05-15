@@ -1,17 +1,27 @@
 # scriptUI-parser
+<<<<<<< HEAD
 
 基于对象的 `ScriptUI` 解析器
 
 # 用法
 
+=======
+基于对象的 ScriptUI 解析器
+# 用法
+将 `src` 目录下 的 `scriptUI-parser-min.jsx` 文件中的代码粘贴到自己编写的脚本文件的头部即可。
+# 示例
+
+
+## example 1
+最小解析：创建一个空白按钮
+>>>>>>> 5f060468e8328d98729770c1155c74a1ae75402b
 ```javaScript
+this.parseScriptUI({ button: '' });
+```
 
-//example 1
-//最小解析：创建一个空白按钮
-var elements = this.parseScriptUI({ button1: '' });
-
-//example 2
-//添加一个节点名称为 "run" 的按钮，并设置事件。
+## example 2
+添加一个节点名称为 "run" 的按钮，并设置事件。
+```javaScript
 var elements = this.parseScriptUI({
     button1: ['run'],
 });
@@ -19,9 +29,11 @@ var elements = this.parseScriptUI({
 elements.run.onClick = function () {
     alert('Yoooooo!');
 };
+```
 
-//example 3
-//将事件通过样式写入
+## example 3
+将事件通过样式写入
+```javaScript
 function foo() {
     alert('Yoooooo!');
 }
@@ -32,9 +44,11 @@ var elements = this.parseScriptUI({
         param: ['run'],
     },
 });
+```
 
-//example 4
-//为按钮添加更多样式
+## example 4
+为按钮添加更多样式
+```javaScript
 function foo() {
     alert('Yoooooo!');
 }
@@ -45,9 +59,11 @@ var elements = this.parseScriptUI({
         param: ['run', [0, 0, 100, 30], '按钮'],
     },
 });
+```
 
-//example 5
-//配置全局主容器的样式。
+## example 5
+配置全局主容器的样式。
+```javaScript
 function foo() {
     alert('Yoooooo!');
 }
@@ -60,17 +76,19 @@ var elements = this.parseScriptUI({
         param: ['run', [0, 0, 100, 30], '按钮'],
     },
 });
+```
 
-example 6
+## example 6
 配置主容器特性
 config 支持以下参数：
-1、dockable 类型：布尔。配置主容器是否可以在AE中停靠，默认为 true。
-2、show 类型：布尔。配置主容器是否在创建后显示，默认为 true。
-3、singleton 类型：布尔。单例模式。启用后解析器返回一个方法，调用该方法可创建单例面板，无论调用该方法多少次，面板只会被创建一次。默认为 false。
+1、`dockable` 类型：`Boolean`。配置主容器是否可以在AE中停靠，默认为 true。
+2、`show` 类型：`Boolean`。配置主容器是否在创建后显示，默认为 true。
+3、`singleton` 类型：`Boolean`。单例模式。启用后解析器返回一个方法，调用该方法可创建单例面板，无论调用该方法多少次，面板只会被创建一次。默认为 false。
 
-// 单例面板案例演示
+单例面板案例演示
+```javaScript
 var configWindow = this.parseScriptUI({
-    //单例窗口模式下，应当将 dockable 设置为 fasle，这样可以确保脚本在 ScriptUI Panels 文件夹下运行时弹出一个 palette，否则会该面板会附加到主容器中。
+    //单例窗口模式下，应当将 dockable 设置为 fasle，这样可以确保脚本在 ScriptUI Panels 文件夹下运行时弹出一个 palette，否则该面板会附加到主容器中。
     //当然如果你知道你在做什么，也可将 dockable 设置为 true。
     config: { dockable: false, singleton: true },
     checkbox: [undefined, undefined, '启用'],
@@ -82,9 +100,11 @@ var mainWindow = this.parseScriptUI({
         param: [undefined, undefined, '设置'],
     },
 });
+```
 
-//example 7
-//完整案例演示。
+## example 7
+完整案例演示。
+```javaScript
 function foo() {
     alert('Yoooooo!!!');
 }
@@ -143,5 +163,4 @@ var elements = this.parseScriptUI({
         param: ['button', undefined, '添加'],
     },
 });
-
 ```
