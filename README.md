@@ -1,7 +1,9 @@
 # scriptUI-parser
-基于对象的 ScriptUI 解析器
+
+基于对象的 `ScriptUI` 解析器
 
 # 用法
+
 ```javaScript
 
 //example 1
