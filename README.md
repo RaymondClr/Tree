@@ -59,12 +59,12 @@ var elements = this.parseScriptUI({
     },
 });
 
-example 6
-配置主容器特性
-config 支持以下参数：
-1、dockable 类型：布尔。配置主容器是否可以在AE中停靠，默认为 true。
-2、show 类型：布尔。配置主容器是否在创建后显示，默认为 true。
-3、singleton 类型：布尔。单例模式。启用后解析器返回一个方法，调用该方法可创建单例面板，无论调用该方法多少次，面板只会被创建一次。默认为 false。
+//example 6
+//配置主容器特性
+//config 支持以下参数：
+//1、dockable 类型：布尔。配置主容器是否可以在AE中停靠，默认为 true。
+//2、show 类型：布尔。配置主容器是否在创建后显示，默认为 true。
+//3、singleton 类型：布尔。单例模式。启用后解析器返回一个方法，调用该方法可创建单例面板，无论调用该方法多少次，面板只会被创建一次。默认为 false。
 
 // 单例面板案例演示
 var configWindow = this.parseScriptUI({
