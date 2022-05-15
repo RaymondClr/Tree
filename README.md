@@ -6,7 +6,7 @@
 
 //example 1
 //最小解析：创建一个空白按钮
-var elements = this.parseScriptUI({ button1: '' });
+this.parseScriptUI({ button: '' });
 
 //example 2
 //添加一个节点名称为 "run" 的按钮，并设置事件。
