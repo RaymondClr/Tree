@@ -1,8 +1,49 @@
 # scriptUI-parser
-基于对象的 `ScriptUI` 解析器
+基于对象的 `Ae ScriptUI` 解析器
 
 # 用法
 将 `src` 目录下 的 `scriptUI-parser-min.jsx` 文件中的代码粘贴到自己编写的脚本文件的头部即可。
+
+# 上下文配置
+Q:为什么会有上下文配置环节？
+A:受限于Ae中可停靠UI的实现逻辑，需要向解析器传递全局环境作为判断依据，否则解析后的UI从ScriptUI Panels文件夹下运行时面板将无法停靠。
+
+## 全局环境
+如果你的脚本运行在全局环境下，可通过以下方式配置上下文。
+
+```javaScript
+//此处是解析器代码 parseScriptUI(resource) { ... }
+parseScriptUI.contex = this;
+
+parseScriptUI({
+    /*UI源对象*/
+});
+
+//你的脚本代码
+function foo() {
+    // Yoooo!
+}
+```
+
+## IIFE（自执行函数）
+如果你的脚本运行在自执行函数或者其他函数内部，可通过以下方式配置上下文。
+
+```javaScript
+(function (global) {
+    //此处是解析器代码 parseScriptUI(resource) { ... }
+    parseScriptUI.context = global;
+
+    parseScriptUI({
+        /*UI源对象*/
+    });
+
+    //你的脚本代码
+    function foo() {
+        // Yoooo!
+    }
+})(this);
+```
+
 
 # 示例
 
@@ -10,13 +51,13 @@
 最小解析：创建一个空白按钮
 
 ```javaScript
-this.parseScriptUI({ button: '' });
+parseScriptUI({ button: '' });
 ```
 
 ## example 2
 添加一个节点名称为 "run" 的按钮，并设置事件。
 ```javaScript
-var elements = this.parseScriptUI({
+var elements = parseScriptUI({
     button1: ['run'],
 });
 
@@ -32,7 +73,7 @@ function foo() {
     alert('Yoooooo!');
 }
 
-var elements = this.parseScriptUI({
+var elements = parseScriptUI({
     button1: {
         style: { onClick: foo },
         param: ['run'],
@@ -47,7 +88,7 @@ function foo() {
     alert('Yoooooo!');
 }
 
-var elements = this.parseScriptUI({
+var elements = parseScriptUI({
     button1: {
         style: { onClick: foo },
         param: ['run', [0, 0, 100, 30], '按钮'],
@@ -62,7 +103,7 @@ function foo() {
     alert('Yoooooo!');
 }
 
-var elements = this.parseScriptUI({
+var elements = parseScriptUI({
     style: { margins: 5, alignChildren: ['fill', 'fill'] },
     param: ['palette', '', undefined, { resizeable: true }],
     button1: {
@@ -81,14 +122,14 @@ config 支持以下参数：
 
 单例面板案例演示
 ```javaScript
-var configWindow = this.parseScriptUI({
+var configWindow = parseScriptUI({
     //单例窗口模式下，应当将 dockable 设置为 fasle，这样可以确保脚本在 ScriptUI Panels 文件夹下运行时弹出一个 palette，否则该面板会附加到主容器中。
     //当然如果你知道你在做什么，也可将 dockable 设置为 true。
     config: { dockable: false, singleton: true },
     checkbox: [undefined, undefined, '启用'],
 });
 
-var mainWindow = this.parseScriptUI({
+var mainWindow = parseScriptUI({
     button: {
         style: { onClick: configWindow },
         param: [undefined, undefined, '设置'],
@@ -103,7 +144,7 @@ function foo() {
     alert('Yoooooo!!!');
 }
 
-var elements = this.parseScriptUI({
+var elements = parseScriptUI({
     style: { margins: 5, alignChildren: ['fill', 'fill'] },
     param: ['palette', '', undefined, { resizeable: true }],
     group1: {
