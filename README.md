@@ -148,7 +148,7 @@ var mainWindow = parseScriptUI({
 parseScriptUI({ rectbutton: [] });
 ```
 ### 圆形按钮
-创建一个空白的矩形按钮：
+创建一个空白的圆形按钮：
 
 ```javaScript
 parseScriptUI({ roundbutton: [] });
@@ -164,7 +164,7 @@ parseScriptUI({ roundbutton: [] });
 rectbutton: [节点名称, 按钮大小, 按钮文字, {创建属性}]
 roundbutton: [节点名称, 按钮大小, 按钮文字, {创建属性}]
 ```
-- 按钮的外观配置主要指对于`{创建属性的配置}`，它是一个对象。
+- 按钮的外观配置主要指对于`{创建属性}`的配置，它是一个对象。
 
 - 我们通过一个实际案例来演示如何配置这些属性。为了方便参照，以下属性皆使用默认值。
 
