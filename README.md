@@ -206,7 +206,7 @@ parseScriptUI({ rectbutton: ['button', undefined, '按钮', { fontName: 'KaiTi' 
 parseScriptUI({ rectbutton: ['button', undefined, '按钮', { enableStroke: false, fillColor: [, '#e81123'] }] });
 ```
 - 细心的你可能已经发现了，fillColor是一个四个元素的数组，但示例中只传了一个参数。的确是这样，你完全可以在数组对应位置（显然逗号还是不能省的）只传入一个参数，解析器知道你想做什么。
-- 不仅如此，颜色和透明度属性还可以直接按以下方式传参，他表示四种状态下都使用同一个参数：
+- 不仅如此，颜色、透明度和描边属性还可以直接按以下方式传参，他表示四种状态下都使用同一个参数：
 ```javaScript
 parseScriptUI({ rectbutton: ['button', undefined, '按钮', { enableStroke: false, fillColor: '#e81123' }] });
 ```
