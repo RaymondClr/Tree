@@ -206,6 +206,11 @@ parseScriptUI({ rectbutton: ['button', undefined, '按钮', { fontName: 'KaiTi' 
 parseScriptUI({ rectbutton: ['button', undefined, '按钮', { enableStroke: false, fillColor: [, '#e81123'] }] });
 ```
 - 细心的你可能已经发现了，fillColor是一个四个元素的数组，但示例中只传了一个参数。的确是这样，你完全可以在数组对应位置（显然逗号还是不能省的）只传入一个参数，解析器知道你想做什么。
+- 不仅如此，颜色和透明度属性还可以直接按以下方式传参，他表示四种状态下都使用同一个参数：
+```javaScript
+parseScriptUI({ rectbutton: ['button', undefined, '按钮', { enableStroke: false, fillColor: '#e81123' }] });
+```
+- 这时候你就拥有了一个纯红色的按钮，并且任何鼠标状态下都是这个颜色。
 - 所有参数都是支持缺省的，另外如果你发现配置了参数之后，按钮的外观并没有发生改变，那么只有两种可能，一是你的参数是无效的，二是你的参数超出了最大限制。我并没有选择在这种时候用弹窗的方式向你展示错误（相信大家都讨厌弹窗，尤其是错误的弹窗），所有非法输入被检测到后，都会使用默认参数进行替补，所以你可以大胆的往参数里写任何内容。
 
 ## example 8
