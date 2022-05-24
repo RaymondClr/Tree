@@ -13,7 +13,7 @@ A:受限于Ae中可停靠UI的实现逻辑，需要向解析器传递全局环�
 
 ```javaScript
 //此处是解析器代码 parseScriptUI(resource) { ... }
-parseScriptUI.contex = this;
+parseScriptUI.context = this;
 
 parseScriptUI({
     /*UI源对象*/
