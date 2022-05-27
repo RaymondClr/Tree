@@ -9,11 +9,10 @@ Q:为什么会有上下文配置环节？\
 A:受限于Ae中可停靠UI的实现逻辑，需要向解析器传递全局环境作为判断依据，否则解析后的UI从ScriptUI Panels文件夹下运行时面板将无法停靠。
 
 ## 全局环境
-如果你的脚本运行在全局环境下，可通过以下方式配置上下文。
+如果你的脚本运行在全局环境下，解析器会自动侦测上下文，无需进行任何配置。
 
 ```javaScript
 //此处是解析器代码 parseScriptUI(resource) { ... }
-parseScriptUI.context = this;
 
 parseScriptUI({
     /*UI源对象*/
