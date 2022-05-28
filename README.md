@@ -122,9 +122,7 @@ config 支持以下参数：\
 单例面板案例演示
 ```javaScript
 var configWindow = parseScriptUI({
-    //单例窗口模式下，应当将 dockable 设置为 fasle，这样可以确保脚本在 ScriptUI Panels 文件夹下运行时弹出一个 palette，否则该面板会附加到主容器中。
-    //当然如果你知道你在做什么，也可将 dockable 设置为 true。
-    config: { dockable: false, singleton: true },
+    config: { singleton: true },
     checkbox: [undefined, undefined, '启用'],
 });
 
