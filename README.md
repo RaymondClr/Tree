@@ -14,7 +14,7 @@ Tree.parse({ button: [] });
 
 结果展示
 
-![image](https://github.com/RaymondClr/Tree/blob/main/image/sample1.png)
+![image](image/sample1.png)
 
 # 导入
 
