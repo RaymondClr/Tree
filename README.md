@@ -26,7 +26,7 @@ Tree.parse({ button: [] });
 
 脚本通常具有绿色、轻量的优点，如果通过多文件管理代码，将失去脚本的这些优点，这是推荐该导入方式的原因。
 
-```
+```javascript
 var Tree=function(){/*....*/}.call(this)
 ```
 
@@ -36,7 +36,7 @@ var Tree=function(){/*....*/}.call(this)
 
 ## 通过 Extend Script 预处理指令导入
 
-```
+```javascript
 //@include "tree.min.js"
 ```
 
@@ -46,7 +46,7 @@ var Tree=function(){/*....*/}.call(this)
 
 如果你将 TreeUI 源码放置于全局环境下（即脚本的顶部，通常为第一行），或者不为 Ae 开发脚本，则可以跳过此环节，直接进入后面的章节：
 
-```
+```javascript
 var Tree = function () {/*....*/}.call(this);
 
 Tree.parse({ button: [] });
@@ -96,9 +96,9 @@ TreeUI 和 ScriptUI 有着完全的兼容性，并在此基础之上简化 UI �
 
 # ScriptUI 基础
 
-如果你从来没有了解过 ScriptUI，或知之甚少，那么阅读本节将会帮你快速建立 ScriptUI 知识框架，以便之后快速上手 TreeUI。
+如果你从来没有了解过 ScriptUI，或知之甚少，那么阅读本章将会帮你快速建立 ScriptUI 知识框架，以便之后快速上手 TreeUI。
 
-因为这不是一份描述 ScriptUI 的文档，所以本节不会过多描述 ScriptUI 的各种细节，如需获取完整信息，请阅读[官方文档](https://extendscript.docsforadobe.dev/user-interface-tools/index.html)。
+因为这不是一份描述 ScriptUI 的文档，所以本章不会过多描述 ScriptUI 的各种细节，如需获取完整信息，请阅读[官方文档](https://extendscript.docsforadobe.dev/user-interface-tools/index.html)。
 
 ✏️ 为了保证示例阅读的简洁性，本节及之后的示例代码中，将不会出现导入及配置 TreeUI 部分的代码。
 
@@ -124,7 +124,7 @@ ScriptUI 是 Adobe 提供的内置组件，它与 ExtendScript JavaScript 解释
 
 ## 元素
 
-元素是 ScriptUI 中对于容器与控件的统称，它们通常被“装”在操作系统的窗口中，属于窗口的UI元素可以是容器或控件。
+元素是 ScriptUI 中对于容器与控件的统称，它们通常被“装”在操作系统的窗口中，属于窗口的 UI 元素可以是容器或控件。
 
 
 
@@ -132,13 +132,13 @@ ScriptUI 是 Adobe 提供的内置组件，它与 ExtendScript JavaScript 解释
 
 ScriptUI 中的元素分为两大类，即容器与控件。
 
-区分容器与控件是一件很基础却又很重要的事情。容器通常可以包含其它容器或控件，所谓包含，即我们可以向容器中添加容器和控件，但通常无法向控件中添加容器和控件。容器是我们组织 UI 布局的的基本框架和单元，我们可以把容器和控件分别类比为计算机中文件夹和文件，而主容器，即下文中将提到的 `Window` 就相当于计算机中的 C 盘、D盘。有些控件同时具有容器和控件的特征，继续阅读下面的内容，你将了解这些特征。
+区分容器与控件是一件很基础却又很重要的事情。容器通常可以包含其它容器或控件，所谓包含，即我们可以向容器中添加容器和控件，但通常无法向控件中添加容器和控件。容器是我们组织 UI 布局的的基本框架和单元，我们可以把容器和控件分别类比作计算机中文件夹和文件，而主容器，即下文中将提到的 `Window` 就相当于计算机中的 C 盘、D盘。有些控件同时具有容器和控件的特征，继续阅读下面的内容，你将了解这些特征。
 
 
 
 ### 父子级
 
-从容器度的角度说，装在容器中的容器或控件通常称为它的子级（child element），反之则为父级（parent element）。
+从容器度的角度说，装在容器中的容器或控件通常称作它的子级（child element），反之则为父级（parent element）。
 
 
 
@@ -184,7 +184,7 @@ Window 容器有三种类型，且具有特定于操作系统的不同窗口外�
 | Palette     | palette  |  √   |  ×   |  √   |  ×   |  √   |
 | Window      | window   |  √   |  ×   |  √   |  ×   |  √   |
 
-`√ `代表支持，`×` 代表不支持。
+`√` 代表支持，`×` 代表不支持。
 
 ⚠️ 在没有显式定义主容器类型的情况下，TreeUI 会针对不同宿主提供相应的默认主容器类型，并以 `palette` 类型优先，其次是 `dialog` 。
 
@@ -234,13 +234,13 @@ Window 容器有三种类型，且具有特定于操作系统的不同窗口外�
 
 有些控件表现出容器的特征，即可以添加其它控件或容器，但可添加的子级类型通常是单一的，下表描述了这些特殊容器的特征：
 
-| 控件名称      | 类型名称     | 特征                                                         |
-| ------------- | ------------ | ------------------------------------------------------------ |
-| Dropdown List | dropdownlist | 子级只能是 Item                                              |
-| Listbox       | listbox      | 子级只能是 Item                                              |
-| Tabbed Panel  | tabbedpanel  | 子级只能是 Tab                                               |
-| Tab           | tab          | 父级只能是 Tabbed Panel，但子级可以是不包括它自身的所有容器或控件。 |
-| Treeview      | treeview     | 子级只能是 Node 或 Item                                      |
+| 控件名称      | 类型名称     | 特征                                         |
+| ------------- | ------------ | -------------------------------------------- |
+| Dropdown List | dropdownlist | 子级只能是 Item                              |
+| Listbox       | listbox      | 子级只能是 Item                              |
+| Tabbed Panel  | tabbedpanel  | 子级只能是 Tab                               |
+| Tab           | tab          | 子级可以是不包括它自身在内的所有容器或控件。 |
+| Treeview      | treeview     | 子级只能是 Node 或 Item                      |
 
 
 
@@ -281,7 +281,7 @@ Window 容器有三种类型，且具有特定于操作系统的不同窗口外�
 
 ## 构建逻辑
 
-TreeUI 使用多级树结构对象去描述并构建 UI。ScriptUI 的 `Resource specifications` ，即资源字符串构建就是该方式的一种实现，但由于它完全是字符串形态，所以非常难以调试，相应的，使用 ScriptUI 容器的 `add` 方法是典型的过程式开发，需要借助大量的中间变量，同时 UI 元素之间的层级关系非常模糊，这同样让调试变得困难。而 TreeUI 在这两种方法之间找到了一种平衡，它直接使用对象字面量表示方式描述 UI，你将同时拥有当前主流编辑器（比如 VsCode）的语法高亮、代码提示和符合直觉的 UI 构建方式，元素之间的层级关系将变得一目了然，且非常易于调试，这些也正是 TreeUI 被开发的原因和价值所在。
+TreeUI 使用多级树结构对象去描述并构建 UI。ScriptUI 的 `Resource specifications` ，即资源字符串构建就是该方式的一种实现，但由于它完全是字符串形态，所以非常难以调试，相应的，使用 ScriptUI 容器的 `add` 方法是典型的过程式开发，需要借助大量的中间变量，同时 UI 元素之间的层级关系非常模糊，这同样让调试变得困难。而 TreeUI 在这两种方法之间寻求平衡，它直接使用对象字面量表示方式描述 UI，你将同时拥有当前主流编辑器（如 VsCode）的语法高亮、代码提示和符合直觉的 UI 构建方式，元素之间的层级关系将变得一目了然，且非常易于调试，这些也正是 TreeUI 被开发的原因和价值所在。
 
 如果现在有这样一个需求：构建一个 UI，UI中有一个面板，面板中有一个输入框和按钮，不考虑元素样式。下面的示例就分别展示了使用不同方式实现该需求的方法：
 
@@ -432,7 +432,7 @@ var window = Tree.parse({
 
 ## 冲突处理
 
-由于 TreeUI 使用字面量对象作为解析源，当在一个对象的同一层级中同时指定多个同一类型的控件或容器的类型名称时，将会不可避免的发生对象键值覆盖，下面的示例展示了这种冲突。
+由于 TreeUI 使用字面量对象作为解析源，当在对象同一层级中同时指定多个同类型控件或容器的类型名称时，将会不可避免的发生对象键值覆盖，下面的示例展示了这种冲突：
 
 ```javascript
 var window = Tree.parse({
@@ -498,7 +498,7 @@ var elements = Tree.parse({ /*...*/ });
 
 如果向 `Tree.parse` 方法传递一个非对象类型的值，TreeUI 返回 `null` ：
 
-```
+```javascript
 var elements = Tree.parse(''); // return null
 ```
 
@@ -656,7 +656,7 @@ TreeUI 直接映射了 ScriptUI 的参数，**仅将第一个参数由原本的�
 w.add ("button" [, bounds, text, creation_properties}]);
 ```
 
-⚠️ 字符串 `"button" 就是原本的元素类型名称，在 TreeUI 中，**这个位置的参数将被用于定义元素节点名称**，而不再是元素类型名称。
+⚠️ 字符串 `"button"` 就是元素类型名称，在 TreeUI 中，**这个位置的参数将被用于定义元素节点名称**，而不再是元素类型名称。
 
 | 参数名称       | 描述                                                         |
 | -------------- | ------------------------------------------------------------ |
@@ -664,7 +664,7 @@ w.add ("button" [, bounds, text, creation_properties}]);
 | text           | 可选的。控件中显示的文本。                                   |
 | creation_props | name：控件的唯一名称。对于模态对话框，特殊名称ok使其为defaultElement，特殊名称cancel使其为父对话框的cancelElement。 |
 
-在 ScriptUI 中，参数用起来是这样的：
+在 ScriptUI 中，参数这么用：
 
 ```javascript
 var window = new Window('palette');
@@ -672,13 +672,13 @@ var button = window.add('button', [0, 0, 100, 25], '按钮', { name: 'myButton' 
 window.show();
 ```
 
-那在 TreeUI 中，用起来就是这样的：
+而 TreeUI 中，参数这么用：
 
 ```javascript
 var window = Tree.parse({ button: ['myButton', [0, 0, 100, 25], '按钮'] });
 ```
 
-你会发现 最后一个叫 `creation_props` 的参数，在以上示例中并没有被使用，那是因为 button 的 `creation_props` 只有一个叫 name 的可配置属性，而这个 name 就是元素的节点名称，所以，只需要按照 TreeUI 的规则，在数组的第一个元素定义它即可，无需重复定义，虽然以下的写法是可以的，但没必要：
+你会发现 最后一个叫 `creation_props` 的参数，在以上示例中并没有被使用，那是因为 button 的 `creation_props` 只有一个叫 name 的可配置属性，而这个 name 就是元素的节点名称，所以，只需要按照 TreeUI 的规则，在数组的第一个元素位置定义它即可，无需重复定义，虽然以下的写法是可以的，但没必要：
 
 ```javascript
 var window = Tree.parse({ button: ['myButton', [0, 0, 100, 25], '按钮', { name: 'my_button' }] });
@@ -686,7 +686,7 @@ var window = Tree.parse({ button: ['myButton', [0, 0, 100, 25], '按钮', { name
 
 ⚠️ 以上操作会导致先定义的节点名 `myButton` 被后定义的 `my_button` 覆盖。
 
-如果一个元素的 creation_props 具有 name 之外的可配置属性，就可以专门用上它了，下面以 edittext 为例，通过[查阅](https://extendscript.docsforadobe.dev/user-interface-tools/control-objects.html#edittext)官方文档，我们得知 editetext  除了 name ，一共有 6 个可配置属性，如果在 TreeUI 中把他们全都用上，就是这样的：
+如果一个元素的 creation_props 具有 name 之外的可配置属性，就可以专门用上它了，下面以 edittext 为例，通过[查阅](https://extendscript.docsforadobe.dev/user-interface-tools/control-objects.html#edittext)官方文档，我们得知 editetext  除了 name ，一共有 6 个可配置属性，如果在 TreeUI 中把它们全都用上，就是这样：
 
 ```javascript
 var window = Tree.parse({
@@ -737,7 +737,7 @@ var elements = Tree.parse({
 });
 ```
 
-⚠️ 如果对元素同时使用参数和样式，并且功能重叠，则参数会被样式覆盖：
+⚠️ 如果对元素同时使用参数和样式，并且功能存在重叠，则参数会被样式覆盖：
 
 ```javascript
 var elements = Tree.parse({
@@ -858,7 +858,7 @@ Tree.parse({ rectbutton: ['button', undefined, '按钮', { enableStroke: false, 
 
 # 主容器配置
 
-每个 `TreeUI.parse` 方法的源中，可以在根位置同时接收一个或多个配置参数，它们通过标识符 `config` 写入。
+每个 `TreeUI.parse` 方法的源中，都可以通过标识符 `config` 在根位置同时写入一个或多个配置参数。
 
 
 
@@ -956,7 +956,7 @@ var mainWindow = Tree.parse({
 
 类型：`Number`
 
-只写，默认为 1。用于配置全局 layout 模式，只可写入以下值：
+只写。默认为 1，用于配置全局 layout 模式，只可写入以下值：
 
 | 值   | 描述                                                         |
 | ---- | ------------------------------------------------------------ |
