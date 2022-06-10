@@ -8,7 +8,7 @@ var Tree = function () {
 
     var TREE = {};
 
-    var VERSION = '0.2.9';
+    var VERSION = '0.3.0';
 
     var INFINITY = 1 / 0;
 
@@ -960,7 +960,7 @@ var Tree = function () {
 
     function runInContext(resource) {
         if (!_isObject(resource)) return null;
-        var container = _apply(buildWindow, null, WindowBuildValue(resource, runInContext));
+        var container = _apply(buildWindow, null, WindowBuildValue(resource, TREE));
         MAIN_CONTAINER_COLLECTION.push(container);
         return container;
     }

@@ -1,0 +1,26 @@
+//@include "../tree.jsx"
+
+Tree.parse({
+    param: [, , , { resizeable: true }],
+    style: { margins: 0, spacing: 0, alignChildren: ['fill', 'fill'] },
+    rectbutton01: [, , , { enableStroke: false, fillColor: '#000000', fillOpacity: [0.8, 1, 0.6, 1] }],
+    rectbutton02: [, , , { enableStroke: false, fillColor: '#b53838', fillOpacity: [0.8, 1, 0.6, 1] }],
+    rectbutton03: [, , , { enableStroke: false, fillColor: '#e4d84c', fillOpacity: [0.8, 1, 0.6, 1] }],
+    rectbutton04: [, , , { enableStroke: false, fillColor: '#a9cbc7', fillOpacity: [0.8, 1, 0.6, 1] }],
+    rectbutton05: [, , , { enableStroke: false, fillColor: '#e5bcc9', fillOpacity: [0.8, 1, 0.6, 1] }],
+    rectbutton06: [, , , { enableStroke: false, fillColor: '#a9a9ca', fillOpacity: [0.8, 1, 0.6, 1] }],
+    rectbutton07: [, , , { enableStroke: false, fillColor: '#e7c19e', fillOpacity: [0.8, 1, 0.6, 1] }],
+    rectbutton08: [, , , { enableStroke: false, fillColor: '#b3c7b3', fillOpacity: [0.8, 1, 0.6, 1] }],
+    rectbutton09: [, , , { enableStroke: false, fillColor: '#677de0', fillOpacity: [0.8, 1, 0.6, 1] }],
+    rectbutton10: [, , , { enableStroke: false, fillColor: '#4aa44c', fillOpacity: [0.8, 1, 0.6, 1] }],
+    rectbutton11: [, , , { enableStroke: false, fillColor: '#8e2c9a', fillOpacity: [0.8, 1, 0.6, 1] }],
+    rectbutton12: [, , , { enableStroke: false, fillColor: '#e8920d', fillOpacity: [0.8, 1, 0.6, 1] }],
+    rectbutton13: [, , , { enableStroke: false, fillColor: '#7f452a', fillOpacity: [0.8, 1, 0.6, 1] }],
+    rectbutton14: [, , , { enableStroke: false, fillColor: '#f46dd6', fillOpacity: [0.8, 1, 0.6, 1] }],
+    rectbutton15: [, , , { enableStroke: false, fillColor: '#3da2a5', fillOpacity: [0.8, 1, 0.6, 1] }],
+    rectbutton16: [, , , { enableStroke: false, fillColor: '#a89677', fillOpacity: [0.8, 1, 0.6, 1] }],
+    rectbutton17: [, , , { enableStroke: false, fillColor: '#1e401e', fillOpacity: [0.8, 1, 0.6, 1] }],
+    rectbutton18: [, , 'F', { enableStroke: false }],
+    rectbutton19: [, , 'X', { enableStroke: false }],
+    rectbutton20: [, , 'S', { enableStroke: false }],
+});
