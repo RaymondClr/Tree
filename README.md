@@ -1,4 +1,4 @@
-# a简介
+# 简介
 
 TreeUI  （简称 Tree）是一款支持 `Ae` `Ps` `Ai` `Id` 的  `ScriptUI` 解析库。它基于 `Extend Script` 语言（ECMAScript 3标准的一个实现）构建。它提供了一种介于 ScriptUI 自身实现的 `add` 方法和 `Resource specifications` 构建形式之间的脚本 UI 构建方式，即使用多级树结构对象去描述并构建UI。可以帮助脚本开发者高效的开发脚本 UI。
 
