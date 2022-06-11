@@ -488,7 +488,7 @@ TreeUI 对于元素的解析顺序是自上而下、由外向内的，这就意�
 
 ## 返回值
 
-TreeUI 在成功完成解析后始终返回一个 `Window` 对象，它与在 ScriptUI 中使用 `new Window()` 生成的实例对象并无区别。`Window` 对象包含所有子容器和子控件。
+**如果脚本在 Ae 宿主的 `ScriptUI Panels` 目录下运行，那么 TreeUI 始终返回一个 `Panel` 对象，否则返回一个 `Window` 对象。**
 
 你可以使用一个变量存储返回值：
 
@@ -587,7 +587,7 @@ var elements = Tree.parse({
 
 元素的读取主要有以下两种方式：
 
-### 使用对象点语法读取元素
+### 使用对象点语法读取元素（推荐）
 
 我们知道，TreeUI 解析后的返回值是一个 Window 对象，既然是对象，那必然可以按对象的方式进行读取：
 
@@ -618,6 +618,8 @@ var myButton1 = myGroup['myButton' + index[1]];
 
 
 ### 使用 ScriptUI 自有的 findElement() 方法
+
+⚠️ 当脚本在 Ae 宿主的 `ScriptUI Panels` 目录下运行时，TreeIU 返回一个 `Panel` 对象，该对象不存在 ` findElement()` 方法，故此方法无效。
 
 当获取的元素嵌套较深时，使用该方法显然是最好的选择。
 
