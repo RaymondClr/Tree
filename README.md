@@ -589,7 +589,7 @@ var elements = Tree.parse({
 
 ### 使用对象点语法读取元素（推荐）
 
-我们知道，TreeUI 解析后的返回值是一个 Window 对象，既然是对象，那必然可以按对象的方式进行读取：
+我们知道，TreeUI 解析后的返回值是一个对象，既然是对象，那必然可以按对象的方式进行读取：
 
 ```javascript
 var elements = Tree.parse({
