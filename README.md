@@ -656,9 +656,9 @@ elements.run.onClick = function () {
 };
 ```
 
-以上代码运行后，如果使用鼠标点击了按钮，会弹出一个内容为“Yoooooo!”的窗口。
+以上代码运行后，如果使用鼠标点击按钮，会弹出一个内容为“Yoooooo!”的窗口。
 
-但在 TreeUI 中，你可以直接通过元素样式添加事件，它可以产生同样的结果：
+但在 TreeUI 中，你可以直接通过元素样式添加事件，它可以产生同样的效果：
 
 ```javascript
 function foo() {
@@ -668,7 +668,7 @@ function foo() {
 Tree.parse({ button1: { style: { onClick: foo } } });
 ```
 
-不仅仅是 onClick 事件，所有 ScriptUI 中预定义的事件类型都可以通过样式写入，你可以从[这里](https://extendscript.docsforadobe.dev/user-interface-tools/control-objects.html?highlight=onChange#control-event-handling-callbacks)查阅不同元素相应可用的事件类型。
+不仅是 onClick 事件，所有 ScriptUI 中预定义的事件类型都可以通过样式写入，你可以从[这里](https://extendscript.docsforadobe.dev/user-interface-tools/control-objects.html?highlight=onChange#control-event-handling-callbacks)查阅不同元素对应可用的事件类型。
 
 
 
