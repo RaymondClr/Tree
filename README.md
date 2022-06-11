@@ -694,7 +694,7 @@ w.add ("button" [, bounds, text, creation_properties}]);
 | -------------- | ------------------------------------------------------------ |
 | bounds         | 可选的。控件的位置和大小。                                   |
 | text           | 可选的。控件中显示的文本。                                   |
-| creation_props | name：控件的唯一名称。对于模态对话框，特殊名称ok使其为defaultElement，特殊名称cancel使其为父对话框的cancelElement。 |
+| creation_props | name：控件的唯一名称。对于模态对话框，特殊名称 ok 使其为 defaultElement，特殊名称 cancel 使其为父对话框的 cancelElement。 |
 
 在 ScriptUI 中，参数这么用：
 
@@ -915,7 +915,7 @@ Tree.parse({ rectbutton: ['button', undefined, '按钮', { enableStroke: false, 
 
 
 
-# 主容器配置
+# 窗口配置
 
 每个 `TreeUI.parse` 方法的源中，都可以通过标识符 `config` 在根位置同时写入一个或多个配置参数。
 
@@ -925,7 +925,7 @@ Tree.parse({ rectbutton: ['button', undefined, '按钮', { enableStroke: false, 
 
 类型：`Boolean`
 
-默认为 true。配置主容器是否可以在AE中停靠。
+默认为 true。配置窗口是否可以在AE中停靠。
 
 示例：
 
@@ -936,7 +936,7 @@ var Window = Tree.parse({
 });
 ```
 
-以上示例运行后将始终无法在 Ae 中停靠面板。
+以上示例运行后窗口将始终无法在 Ae 中停靠。
 
 
 
@@ -944,7 +944,7 @@ var Window = Tree.parse({
 
 类型：`Boolean`
 
-默认为 true。配置主容器是否在创建后显示。
+默认为 true。配置窗口是否在创建后显示。
 
 示例：
 
@@ -971,7 +971,7 @@ window.show()
 
 类型：`Boolean`
 
-默认为 false。单例模式。启用后 TreeUI 返回一个方法，调用该方法可创建单例面板，无论调用该方法多少次，面板只会被创建一次，特别适用于构建脚本的参数配置面板。
+默认为 false。单例模式。启用后 TreeUI 返回一个方法，调用该方法可创建单例窗口，无论调用该方法多少次，窗口只会被创建一次，特别适用于构建脚本的参数配置面板。
 
 以下示例展示了单例模式的用法：
 
