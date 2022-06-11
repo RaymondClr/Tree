@@ -564,7 +564,7 @@ var elements = Tree.parse({
 
 说到这，我们就可以补充一个在节点名一节中没有明确的点——容器的节点名怎么定义呢？因为之前的示例中，它的类型名称后从来都是对象，对象中定义的都是容器包含的其它元素。
 
-显然，现在我们可以很好的回答这个问题了，容器的节点名使用参数拆分的方式定义（当然，容器的参数可以不进行拆分，但这么做估计不会有什么太大的意义，毕竟容器就是用来装其它东西的。），而且还可以顺便定义容器的样式：
+显然，现在可以很好的回答这个问题了，容器的节点名称使用参数拆分的方式定义（当然，容器的参数可以不进行拆分，但这么做估计不会有什么太大的意义，毕竟容器就是用来装其它东西的。），而且还可以顺便定义容器的样式：
 
 ```javascript
 var elements = Tree.parse({
@@ -637,6 +637,38 @@ var myButton2 = elements.findElement('myButton2');
 ```
 
 ⚠️ `findElement` 方法始终返回第一次匹配到的节点名对应的元素，而不是全部，所以，请始终保持节点名称的唯一性。
+
+
+
+## 事件
+
+事件是可以被 JavaScript 侦测到的行为。 每个元素都可以产生某些可以触发的事件。比如说，我们可以在用户点击某按钮时产生一个 onClick 事件来触发某个函数。你可以在官方文档中了解关于 ScriptUI [事件](https://extendscript.docsforadobe.dev/user-interface-tools/event-handling.html)的全部内容。
+
+以下示例演示了如何使用传统方式给一个按钮添加事件：
+
+```javascript
+var elements = Tree.parse({
+    button1: ['run'],
+});
+
+elements.run.onClick = function () {
+    alert('Yoooooo!');
+};
+```
+
+以上代码运行后，如果使用鼠标点击了按钮，会弹出一个内容为“Yoooooo!”的窗口。
+
+但在 TreeUI 中，你可以直接通过元素样式添加事件，它可以产生同样的结果：
+
+```javascript
+function foo() {
+    alert('Yoooooo!');
+}
+
+Tree.parse({ button1: { style: { onClick: foo } } });
+```
+
+不仅仅是 onClick 事件，所有 ScriptUI 中预定义的事件类型都可以通过样式写入，你可以从[这里](https://extendscript.docsforadobe.dev/user-interface-tools/control-objects.html?highlight=onChange#control-event-handling-callbacks)查阅不同元素相应可用的事件类型。
 
 
 
