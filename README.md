@@ -640,9 +640,9 @@ var myButton2 = elements.findElement('myButton2');
 
 
 
-## 事件
+## 事件添加
 
-事件是可以被 JavaScript 侦测到的行为。 每个元素都可以产生某些可以触发的事件。比如说，我们可以在用户点击某按钮时产生一个 onClick 事件来触发某个函数。你可以在官方文档中了解关于 ScriptUI [事件](https://extendscript.docsforadobe.dev/user-interface-tools/event-handling.html)的全部内容。
+事件是可以被 JavaScript 侦测到的行为。 每个元素都可以产生某些可以触发的事件。比如说，我们可以在用户点击某按钮时产生一个 onClick 事件来触发某个函数。你可以在官方文档中了解关于 [ScriptUI 事件](https://extendscript.docsforadobe.dev/user-interface-tools/event-handling.html) 的全部内容。
 
 以下示例演示了如何使用传统方式给一个按钮添加事件：
 
