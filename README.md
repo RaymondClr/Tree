@@ -100,7 +100,7 @@ TreeUI 对 ScriptUI 有着完全的兼容性，并在此基础之上简化 UI �
 
 因为这不是一份描述 ScriptUI 的文档，所以本章不会过多描述 ScriptUI 的各种细节，如需获取完整信息，请阅读[官方文档](https://extendscript.docsforadobe.dev/user-interface-tools/index.html)。
 
-✏️ 为了保证示例阅读的简洁性，本节及之后的示例代码中，将不会出现导入及配置 TreeUI 部分的代码。
+✏️ 为了保证示例阅读的简洁性，本章及之后的示例代码中，将不会出现导入及配置 TreeUI 部分的代码。
 
 
 
@@ -350,7 +350,7 @@ TreeUI 始终使用对象键值对（我们通常叫对象的属性与值）描�
 ```javascript
 var elements = Tree.parse({
     button: [],
-    editetext: [],
+    edittext: [],
     slider: [],
 });
 ```
