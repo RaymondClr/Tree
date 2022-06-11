@@ -777,7 +777,7 @@ TreeUI 在 ScriptUI 原有控件之外，封装了一组自定义控件，以满
 
 ## rectbutton 和 roundbutton
 
-圆形按钮和矩形按钮有着完全一致的可配置属性，两者的区别仅仅是类型名称及外观差异而已。
+一个可以对外观进行自定义的矩形和圆形按钮，单击可触发 onClick 回调。它们有着完全一致的可配置属性，仅在类型名称和外观方面存在差异。
 
 创建一个空白的矩形按钮：
 
@@ -798,9 +798,36 @@ rectbutton: [节点名称, 按钮大小, 按钮文字, {创建属性}]
 roundbutton: [节点名称, 按钮大小, 按钮文字, {创建属性}]
 ```
 
-按钮的外观配置主要指对于`{创建属性}`的配置，它是一个对象。
+按钮的外观配置主要指对于`{创建属性}`的配置，它是一个对象。创建对象具有以下可配置属性：
 
-我们通过一个实际案例来演示如何配置这些属性。为了方便参照，以下属性均为宿主 Ae 中使用的默认值：
+| 属性名称      | 类型                       | 限制                                                         | 描述         |
+| ------------- | -------------------------- | ------------------------------------------------------------ | ------------ |
+| enableText    | `Boolean`                  | true 或 false                                                | 是否显示文字 |
+| enableFill    | `Boolean`                  | true 或 false                                                | 是否启用填充 |
+| enableStroke  | `Boolean`                  | true 或 false                                                | 是否启用描边 |
+| fontName      | `String`                   | 字体名称字符串                                               | 字体         |
+| fontStyle     | `Boolean` 或 `Number`      | 0 ≤ value ≤ 3 或[特定字符串](https://extendscript.docsforadobe.dev/user-interface-tools/scriptui-class.html?highlight=ITALIC#scriptui-fontstyle) | 字体样式     |
+| fontSize      | `Number`                   | 1 ≤ value ≤ 24                                               | 文字大小     |
+| fontOffset    | `2 Item Array`             | -INFINITY ≤ value ≤ INFINITY                                 | 文字偏移量   |
+| fontColor     | `4 Item Array` 或 `String` | Hex 字符串                                                   | 文字颜色     |
+| fillColor     | `4 Item Array` 或 `String` | Hex 字符串                                                   | 填充颜色     |
+| strokeColor   | `4 Item Array` 或 `String` | Hex 字符串                                                   | 描边颜色     |
+| fontOpacity   | `4 Item Array` 或 `Number` | 0 ≤ value ≤ 1                                                | 文字透明度   |
+| fillOpacity   | `4 Item Array` 或 `Number` | 0 ≤ value ≤ 1                                                | 填充透明度   |
+| strokeOpacity | `4 Item Array` 或 `Number` | 0 ≤ value ≤ 1                                                | 描边透明度   |
+| strokeWidth   | `Number`                   | 0 ≤ value ≤ 10                                               | 描边宽度     |
+
+个别参数详解：
+
+| 属性名称   | 详解                                                         |
+| ---------- | ------------------------------------------------------------ |
+| fontName   | 打开AE，点开字符面板右上角菜单，勾选“显示英文字体名称”，此时字体列表中显示的名称即可作为 fontName 参数。 |
+| fontStyle  | 可以是字符串 `REGULAR` `BOLD` `ITALIC` `BOLDITALIC` 之一，或数字 0 至 3（分别对应前面4种样式） |
+| fontOffset | 用于偏移文字在按钮上的位置，以修正 ScriptUI 中的计算 Bug 。参数是一个2元素数组，分别对应 x 和 y 方向的偏移量。 |
+
+✏️ fontColor、fillColor、strokeColor 属性皆使用一个 4 元素数组作为参数，它们分别对应鼠标状态的四个阶段，即悬停、移出、点击、抬起。
+
+以下示例使用了按钮在 Ae 中的默认参数来演示如何配置这些属性：
 
 ```javaScript
 Tree.parse({
@@ -809,20 +836,20 @@ Tree.parse({
         undefined,
         '按钮',
         {
-            enableText: true, //是否显示按钮上的文字
-            enableFill: true, //是否启用对按钮的填充
-            enableStroke: true, //是否启用对按钮的描边
-            fontName: 'Tahoma', //按钮字体，你一定很想知道都可以换成哪些字体，并且应该怎么输入。方法就是打开你的AE，然后开启字符面板，将面板右上角的三横杠菜单点开，勾选“显示英文字体名称，然后你会发现，字符面板里的所有字体名称都变成了英文，没错，这些英文就是可以写在这里的参数，复制粘贴即可（嗯，真的有很多字体，所以我并无打算把他们都列在文档里）。”
-            fontStyle: 'REGULAR', //按钮字体样式，可选参数有：REGULAR|BOLD|ITALIC|BOLDITALIC
-            fontSize: 12, //按钮文字大小
-            fontOffset: [0, 0], //按钮文字的偏移量。这可能是个莫名其妙的属性，因为ScriptUI对字体边界的计算，相对不同字体而言总是不一致的（这是 ScriptUI 的BUG），所以，你在更换某个字体后，大概率会发现文字并没有水平垂直居中，身为强迫症的你，这个属性可能是救命稻草。该属性是有2个元素的数组，分别对应横向与纵向的文字偏移量（单位是像素），正值向右/下偏，负值向左/下偏。
-            fontColor: ['#161616', '#8a8a8a', '#161616', '#ffffff'], //按钮在四个阶段分别对应的文字颜色
-            fillColor: ['#8a8a8a', '#232323', '#636363', '#2d8ceb'], //按钮在四个阶段分别对应的填充颜色
-            strokeColor: ['#8a8a8a', '#8a8a8a', '#636363', '#2d8ceb'], //按钮在四个阶段分别对应的描边颜色
-            fontOpacity: [1, 1, 1, 1], //按钮在四个阶段分别对应的字体透明度
-            fillOpacity: [1, 1, 1, 1], //按钮在四个阶段分别对应的填充透明度
-            strokeOpacity: [1, 1, 1, 1], //按钮在四个阶段分别对应的描边透明度
-            strokeWidth: [2, 2, 2, 2], //按钮在四个阶段分别对应的描边粗细
+            enableText: true,
+            enableFill: true,
+            enableStroke: true,
+            fontName: 'Tahoma',
+            fontStyle: 'REGULAR',
+            fontSize: 12,
+            fontOffset: [0, 0],
+            fontColor: ['#161616', '#8a8a8a', '#161616', '#ffffff'],
+            fillColor: ['#8a8a8a', '#232323', '#636363', '#2d8ceb'],
+            strokeColor: ['#8a8a8a', '#8a8a8a', '#636363', '#2d8ceb'],
+            fontOpacity: [1, 1, 1, 1],
+            fillOpacity: [1, 1, 1, 1],
+            strokeOpacity: [1, 1, 1, 1],
+            strokeWidth: [2, 2, 2, 2],
         },
     ],
 });
@@ -852,7 +879,7 @@ Tree.parse({ rectbutton: ['button', undefined, '按钮', { enableStroke: false, 
 
 这时候你就拥有了一个纯红色的按钮，并且任何鼠标状态下都是这个颜色。
 
-所有参数都是支持缺省的，另外如果你发现配置了参数之后，按钮的外观并没有发生改变，那么只有两种可能，一是你的参数是无效的，二是你的参数超出了最大限制，所有非法输入被检测到后，都会使用默认参数进行替补。
+所有参数都是支持缺省的，如果你发现配置了参数之后，按钮的外观并没有发生改变，那么只有两种可能，一是你的参数是无效的，二是你的参数超出了最大限制，所有非法输入被检测到后，都会使用默认参数进行替补。
 
 
 
