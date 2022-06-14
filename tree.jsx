@@ -8,7 +8,7 @@ var Tree = function () {
 
     var TREE = {};
 
-    var VERSION = '0.3.1';
+    var VERSION = '0.3.2';
 
     var INFINITY = 1 / 0;
 
@@ -251,7 +251,7 @@ var Tree = function () {
     function _assign(object) {
         _objectEach([].slice.call(arguments, 1), function (source) {
             if (_isObject(source)) {
-                for (var property in source) object[property] = source[property];
+                for (var property in source) if (_has(source, property)) object[property] = source[property];
             }
         });
         return object;
