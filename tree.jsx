@@ -1,14 +1,14 @@
 var Tree = function () {
     var ROOT = this;
-    var GLOBAL = isHelperObject($) && isGlobalObject($.global) && $.global;
-    var BRIDGETALK = !!GLOBAL && isBridgeTalkObject(GLOBAL.BridgeTalk) && GLOBAL.BridgeTalk;
+    var GLOBAL = getGlobal($);
+    var BRIDGETALK = getBridgeTalk(GLOBAL);
     var SUPPORT_HOST = ['aftereffects', 'photoshop', 'illustrator', 'indesign', 'estoolkit'];
 
     if (!isValidHost(BRIDGETALK, SUPPORT_HOST)) return null;
 
     var TREE = {};
 
-    var VERSION = '0.3.0';
+    var VERSION = '0.3.1';
 
     var INFINITY = 1 / 0;
 
@@ -86,8 +86,10 @@ var Tree = function () {
     var reCombination = /[CGMNTW][ABDEFGHIKNOPQRSUVXYZ]|[DK]J|[VL][LJ]|UT/,
         reIsContainer = /[DGKLNTUV]/,
         reIsListItemContainer = /[DKLV]/,
+        reIsSelectableContainer = /[DKUV]/,
         reIsCustomControl = /[XYZ]/,
         reIsCustomButton = /[XY]/,
+        reIsNativeContainer = /[GNTU]/,
         reIsNativeControl = /[ABDEFHIKOPQRSV]/;
 
     var MOUSE_LEFT_CLICK_FLAG = 0,
@@ -95,15 +97,15 @@ var Tree = function () {
 
     var MOUSE_EVENT_REFERENCES = ['mouseover', 'mouseout', 'mousedown', 'mouseup'];
 
-    var CUSTOM_BUTTON_FONT_PROPERTITES = ['fontName', 'fontStyle', 'fontSize'],
-        CUSTOM_BUTTON_PENS_PROPERTITES = ['fontColor', 'fillColor', 'strokeColor', 'fontOpacity', 'fillOpacity', 'strokeOpacity', 'strokeWidth'],
-        CUSTOM_BUTTON_CONFIG_PROPERTITES = ['enableText', 'enableFill', 'enableStroke', 'fontOffset'],
-        CUSTOM_BUTTON_AUTO_FILL_PROPERTITES = ['fontColor', 'fillColor', 'strokeColor', 'fontOpacity', 'fillOpacity', 'strokeOpacity', 'strokeWidth'];
+    var CUSTOM_BUTTON_FONT_PROPERTIES = ['fontName', 'fontStyle', 'fontSize'],
+        CUSTOM_BUTTON_PENS_PROPERTIES = ['fontColor', 'fillColor', 'strokeColor', 'fontOpacity', 'fillOpacity', 'strokeOpacity', 'strokeWidth'],
+        CUSTOM_BUTTON_CONFIG_PROPERTIES = ['enableText', 'enableFill', 'enableStroke', 'fontOffset'],
+        CUSTOM_BUTTON_AUTO_FILL_PROPERTIES = ['fontColor', 'fillColor', 'strokeColor', 'fontOpacity', 'fillOpacity', 'strokeOpacity', 'strokeWidth'];
 
     var CUSTOM_ELEMENT_TYPE_REFERENCES = { rectbutton: 'customView', roundbutton: 'customView', angle: 'customBoundedValue' };
 
-    var RECT_BUTTON_VALID_PROPERTITES = ['enableText', 'enableFill', 'enableStroke', 'fontName', 'fontStyle', 'fontSize', 'fontOffset', 'fontColor', 'fillColor', 'strokeColor', 'fontOpacity', 'fillOpacity', 'strokeOpacity', 'strokeWidth'],
-        ROUND_BUTTON_VALID_PROPERTITES = RECT_BUTTON_VALID_PROPERTITES;
+    var RECT_BUTTON_VALID_PROPERTIES = ['enableText', 'enableFill', 'enableStroke', 'fontName', 'fontStyle', 'fontSize', 'fontOffset', 'fontColor', 'fillColor', 'strokeColor', 'fontOpacity', 'fillOpacity', 'strokeOpacity', 'strokeWidth'],
+        ROUND_BUTTON_VALID_PROPERTIES = RECT_BUTTON_VALID_PROPERTIES;
 
     var STROKE_WIDTH_REFERENCES = { aftereffects: 2, photoshop: 1, illustrator: 2, indesign: 2, estoolkit: 2 },
         STROKE_WIDTH_DEFAULT = _times(4, _constant(STROKE_WIDTH_REFERENCES[HOST_NAME]));
@@ -235,6 +237,15 @@ var Tree = function () {
         var result = Array(length);
         while (++index < length) result[index] = iteratee(array[index], index, array);
         return result;
+    }
+
+    function _arraySome(array, predicate) {
+        var index = -1;
+        var length = array.length;
+        while (++index < length) {
+            if (predicate(array[index], index, array)) return true;
+        }
+        return false;
     }
 
     function _assign(object) {
@@ -437,6 +448,10 @@ var Tree = function () {
         return result;
     }
 
+    function _stubFalse() {
+        return false;
+    }
+
     function _times(n, iteratee) {
         var index = -1;
         var result = Array(n);
@@ -452,6 +467,15 @@ var Tree = function () {
 
     function _toString(value) {
         return value == null ? '' : _baseToString(value);
+    }
+
+    function _uniq() {
+        var result = [];
+        var array = [].concat.apply([], arguments);
+        _arrayEach(array, function (value) {
+            if (!_contains(result, value)) result.push(value);
+        });
+        return result;
     }
 
     function _unset(object, key) {
@@ -489,19 +513,22 @@ var Tree = function () {
     }
 
     function addGeneralContainer(container, value, type, collector) {
-        if (isListItemContainer(type)) {
-            var style = getElementStyle(value);
-            var listItemContainer = nativeAddContainer(container, type, wrapElementParam(value, type));
-            if (_has(style, 'selection')) collector.listContainer.push({ container: listItemContainer, itemIndex: style.selection });
-            return _assign(listItemContainer, _unset(style, 'selection'));
+        var style = getElementStyle(value);
+        var container = nativeAddContainer(container, type, wrapElementParam(value, type));
+
+        if (isSelectableContainer(type) && _has(style, 'selection')) {
+            collector.listContainer.push({ container: container, itemIndex: style.selection });
+            return _assign(container, _unset(style, 'selection'));
         }
-        return _assign(nativeAddContainer(container, type, wrapElementParam(value, type)), getElementStyle(value));
+
+        return _assign(container, getElementStyle(value));
     }
 
-    function addGeneralControl(container, value, type) {
+    function addGeneralControl(container, value, type, collector) {
         type = IS_AE_2019 && isCustomButton(type) ? 'button' : type;
         var func = isCustomControl(type) ? customAddControl : nativeAddControl;
-        return func(container, type, wrapElementParam(value, type));
+        var control = func(container, type, wrapElementParam(value, type));
+        return control;
     }
 
     function addListItem(container, value, type, collector) {
@@ -523,6 +550,21 @@ var Tree = function () {
         return defaultParam;
     }
 
+    function baseEachElement(container, accumulator, breaker, predicate) {
+        var containers = [];
+        var isDone = _arraySome(container.children, function (element) {
+            if (isNativeContainer(element.type)) containers.push(element);
+            if (predicate(element)) accumulator.push(element);
+            return breaker(accumulator);
+        });
+
+        if (isDone) return;
+
+        _arrayEach(containers, function (container) {
+            baseEachElement(container, accumulator, breaker, predicate);
+        });
+    }
+
     function baseEachPath(object, accumulator, iteratee) {
         _each(object, function (value, key) {
             iteratee(value, key, accumulator.concat(key), object);
@@ -537,12 +579,17 @@ var Tree = function () {
             if (isContainer(key)) {
                 var newContainer = containerIteratee(container, value, key, collector);
                 baseEachSource(value, newContainer, containerIteratee, controlIteratee, collector);
-            } else controlIteratee(container, value, key);
+            } else controlIteratee(container, value, key, collector);
         });
     }
 
     function baseGetConfig(value) {
         return _get(value, 'config');
+    }
+
+    function baseGetElementId(element) {
+        var properties = element.properties;
+        return properties && properties.name;
     }
 
     function baseGetListItemParam(value) {
@@ -562,9 +609,12 @@ var Tree = function () {
     function bulidElements(resource, context) {
         var container = initMainContainer(resource, context);
         var collector = new ElementCollector();
+
         baseEachSource(resource, container, addContainer, addControl, collector);
+
         selectListItem(collector.listContainer);
         expandTreeViewNodes(collector.nodes);
+
         return container;
     }
 
@@ -617,7 +667,7 @@ var Tree = function () {
         var text = _get(param, 2, RECT_STYLE_DEFAULT.text);
         var baseElementParam = { text: text, properties: { name: rawProperties.name } };
         var control = container.add(createResourceSpecification(type, baseElementParam), bounds);
-        var drawParam = _assign(_basePick(rawProperties, RECT_BUTTON_VALID_PROPERTITES), { bounds: bounds, text: text });
+        var drawParam = _assign(_basePick(rawProperties, RECT_BUTTON_VALID_PROPERTIES), { bounds: bounds, text: text });
         drawParam = assignCustomParam(mapFullParam(drawParam), _cloneDeep(RECT_CREATION_DEFAULT), RECT_BUTTON_PARAM_VALIDATOR);
         return drawControl(control, type, drawParam);
     }
@@ -633,7 +683,7 @@ var Tree = function () {
         var text = _get(param, 2, ROUND_STYLE_DEFAULT.text);
         var baseElementParam = { text: text, properties: { name: rawProperties.name } };
         var control = container.add(createResourceSpecification(type, baseElementParam), bounds);
-        var drawParam = _assign(_basePick(rawProperties, ROUND_BUTTON_VALID_PROPERTITES), { bounds: bounds, text: text });
+        var drawParam = _assign(_basePick(rawProperties, ROUND_BUTTON_VALID_PROPERTIES), { bounds: bounds, text: text });
         drawParam = assignCustomParam(mapFullParam(drawParam), _cloneDeep(ROUND_CREATION_DEFAULT), ROUND_BUTTON_PARAM_VALIDATOR);
         return drawControl(control, type, drawParam);
     }
@@ -665,7 +715,7 @@ var Tree = function () {
         var graphics = control.graphics;
         var pens = createPens(graphics, mapPensParam(param));
         var font = createFont(mapFontParam(param));
-        _assign(graphics, _basePick(param, CUSTOM_BUTTON_CONFIG_PROPERTITES), { pen: pens.mouseout, font: font });
+        _assign(graphics, _basePick(param, CUSTOM_BUTTON_CONFIG_PROPERTIES), { pen: pens.mouseout, font: font });
         return customDraw(wrapOnClickEvent(wrapPensState(control, pens)), type);
     }
 
@@ -735,6 +785,10 @@ var Tree = function () {
         return rawWidth / ((textNum + PS_WIDTH_MEASURE_FACTOR) / textNum);
     }
 
+    function getBridgeTalk(object) {
+        return !!object && isBridgeTalkObject(object.BridgeTalk) && object.BridgeTalk;
+    }
+
     function getCreationProperties(param, key) {
         return param[getCreationPropertiesIndex(key)];
     }
@@ -749,8 +803,58 @@ var Tree = function () {
         return _isArray(value) ? mapNullValue(value) : baseGetParam(value);
     }
 
+    function getElementsById(targetId) {
+        targetId = String(targetId);
+        var result = [];
+
+        function breaker(accumulator) {
+            return accumulator.length > 0;
+        }
+
+        baseEachElement(this, result, breaker, function (element) {
+            var elementId = baseGetElementId(element);
+            if (_isNil(elementId)) return false;
+            return targetId === elementId;
+        });
+
+        return result.length === 0 ? null : result[0];
+    }
+
+    function getElementsByName() {
+        targetNames = wrapFindElementInput(arguments);
+        var seen = [];
+        var result = [];
+
+        function breaker() {
+            return targetNames.length === seen.length;
+        }
+
+        baseEachElement(this, result, breaker, function (element) {
+            var elementId = baseGetElementId(element);
+            if (_isNil(elementId)) return false;
+            return _contains(targetNames, elementId) && !_contains(seen, elementId) && seen.push(elementId);
+        });
+
+        return result.length === 0 ? null : result;
+    }
+
+    function getElementsByType() {
+        var targetTypes = wrapFindElementInput(arguments);
+        var result = [];
+
+        baseEachElement(this, result, _stubFalse, function (element) {
+            return _contains(targetTypes, element.type);
+        });
+
+        return result.length === 0 ? null : result;
+    }
+
     function getElementStyle(value) {
         return _isArray(value) ? {} : baseGetStyle(value);
+    }
+
+    function getGlobal(object) {
+        return isHelperObject(object) && isGlobalObject(object.global) && object.global;
     }
 
     function getListItemParam(value) {
@@ -858,6 +962,10 @@ var Tree = function () {
         return reIsNativeControl.test(CONTROL_TYPE_FLAG[type]);
     }
 
+    function isNativeContainer(type) {
+        return reIsNativeContainer.test(CONTROL_TYPE_FLAG[type]);
+    }
+
     function isNode(type) {
         return type === 'node';
     }
@@ -872,6 +980,14 @@ var Tree = function () {
 
     function isRightClick(event) {
         return event.button === MOUSE_RIGHT_CLICK_FLAG;
+    }
+
+    function isSelectableContainer(type) {
+        return reIsSelectableContainer.test(CONTROL_TYPE_FLAG[type]);
+    }
+
+    function isTabbedpanel(type) {
+        return type === 'tabbedpanel';
     }
 
     function isValidCombination(parentType, childType) {
@@ -900,7 +1016,7 @@ var Tree = function () {
     }
 
     function mapFontParam(param) {
-        return _basePick(param, CUSTOM_BUTTON_FONT_PROPERTITES);
+        return _basePick(param, CUSTOM_BUTTON_FONT_PROPERTIES);
     }
 
     function mapFontStyleFlag(value) {
@@ -909,7 +1025,7 @@ var Tree = function () {
 
     function mapFullParam(param) {
         return _mapValues(param, function (value, key) {
-            return _contains(CUSTOM_BUTTON_AUTO_FILL_PROPERTITES, key) && !_isArray(value) ? _times(4, _constant(value)) : value;
+            return _contains(CUSTOM_BUTTON_AUTO_FILL_PROPERTIES, key) && !_isArray(value) ? _times(4, _constant(value)) : value;
         });
     }
 
@@ -920,7 +1036,7 @@ var Tree = function () {
     }
 
     function mapPensParam(param) {
-        return _arrayMap(_apply(_zip, null, _values(_basePick(param, CUSTOM_BUTTON_PENS_PROPERTITES))), function (values) {
+        return _arrayMap(_apply(_zip, null, _values(_basePick(param, CUSTOM_BUTTON_PENS_PROPERTIES))), function (values) {
             var result = _chunk(values, 3);
             var colorValue = _zip(result[0], result[1]);
             var colorArray = _arrayMap(colorValue, function (value) {
@@ -969,6 +1085,7 @@ var Tree = function () {
         _arrayEach(listContainer, function (value) {
             var container = value.container;
             var itemIndex = value.itemIndex;
+            if (isTabbedpanel(container.type)) return (container.selection = value.itemIndex);
             var items = _arrayMap(_isArray(itemIndex) ? itemIndex : [itemIndex], function (indexValue) {
                 return container.items[indexValue];
             });
@@ -994,6 +1111,19 @@ var Tree = function () {
 
     function wrapElementParam(value, type) {
         return wrapNodeName(getElementParam(value), type);
+    }
+
+    function wrapFindElementInput(input) {
+        return _uniq(_arrayMap([].concat.apply([], input), String));
+    }
+
+    function wrapGetElementMethods(constructors) {
+        _arrayEach(constructors, function (constructor) {
+            var prototype = constructor.prototype;
+            prototype.getElementById = getElementsById;
+            prototype.getElementsByName = getElementsByName;
+            prototype.getElementsByType = getElementsByType;
+        });
     }
 
     function wrapLayoutMode(setAll, setAlone) {
@@ -1042,6 +1172,8 @@ var Tree = function () {
         param[0] = _contains(SUPPORT_CONTAINER_TYPE, type) ? type : MAIN_CONTAINER_TYPE_DEFAULT;
         return param;
     }
+
+    wrapGetElementMethods([Window, Panel, Group]);
 
     TREE.parse = runInContext;
     TREE.version = VERSION;
