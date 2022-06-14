@@ -506,15 +506,15 @@ var elements = Tree.parse(''); // return null
 
 
 
-## 节点名称
+## 元素 ID 
 
-在元素创建一节中我们提到，`[]` 是一个定义元素参数的数组，那么对于所有常规的控件和容器来说，该数组的第一个参数永远是节点名称，它是一个字符串。
+在元素创建一节中我们提到，`[]` 是一个定义元素参数的数组，那么对于所有常规的控件和容器来说，该数组的第一个参数永远是元素 ID ，它是一个字符串。
 
 如果把解析后的 UI 比作一棵树，那么容器就是一根根枝干，控件就是枝干上的叶子。
 
-那节点名称是什么呢，节点名称就是枝干和叶子的身份证号码——一个唯一的、不重复的字符串。有了它，我们就可以在 TreeUI 解析完所有元素之后精准地读取它们，换言之，如果你从未定义过元素的节点名称，那么在解析完成后，你将无法读取这些元素，虽然可以看到它们。
+那元素 ID 是什么呢，元素 ID 就是枝干和叶子的身份证号码——一个唯一的、不重复的字符串。有了它，我们就可以在 TreeUI 解析完所有元素之后精准地读取它们，换言之，如果你从未定义过元素的 ID ，那么在解析完成后，你将无法读取这些元素，虽然可以看到它们。
 
-元素的节点名称这么定义：
+元素的 ID 这么定义：
 
 ```javascript
 var elements = Tree.parse({ button: ['myButton'] });
@@ -562,9 +562,9 @@ var elements = Tree.parse({
 
 ✏️ 以上代码的参数部分不会被 TreeUI 解析，但你会得到一个默认外观且可点击的按钮。
 
-说到这，我们就可以补充一个在节点名称一节中没有明确的点——容器的节点名称怎么定义呢？因为之前的示例中，它的类型名称后从来都是对象，对象中定义的都是容器包含的其它元素。
+说到这，我们就可以补充一个在元素 ID 一节中没有明确的点——容器的元素 ID 怎么定义呢？因为之前的示例中，它的类型名称后从来都是对象，对象中定义的都是容器包含的其它元素。
 
-显然，现在可以很好的回答这个问题了，容器的节点名称使用参数拆分的方式定义（当然，容器的参数可以不进行拆分，但这么做估计不会有什么太大的意义，毕竟容器就是用来装其它东西的。），而且还可以顺便定义容器的样式：
+显然，现在可以很好的回答这个问题了，容器的元素 ID 使用参数拆分的方式定义（当然，容器的参数可以不进行拆分，但这么做估计不会有什么太大的意义，毕竟容器就是用来装其它东西的。），而且还可以顺便定义容器的样式：
 
 ```javascript
 var elements = Tree.parse({
@@ -583,11 +583,76 @@ var elements = Tree.parse({
 
 ## 元素读取
 
-⚠️ 只有在定义了节点名称的情况下，元素才能够被读取。
+⚠️ 只有在定义了元素 ID 的情况下，元素才能够被读取。
 
-元素的读取主要有以下两种方式：
+### 使用 TreeUI 实现的 getElement 方法（推荐）
 
-### 使用对象点语法读取元素（推荐）
+TreeUI 在 ScriptUI 所有容器构造器的原型上实现了一组获取元素的方法，一共 3 种：
+
+我们通过一组已经被解析完成的元素，分别演示它们的用法：
+
+```javascript
+var elements = Tree.parse({
+    group: {
+        style: { orientation: 'row' },
+        param: ['myGroup'],
+        button1: ['myButton1'],
+        button2: ['myButton2'],
+    },
+});
+```
+
+1、**`getElementById`**
+
+```javascript
+var myGroup = elements.getElementById('myGroup'); // 返回一个 group 元素
+var myButton1 = myGroup.getElementById('myButton1'); // 返回一个按钮元素
+var myButton2 = elements.getElementById('myButton2'); // 返回一个按钮元素
+```
+
+
+
+2、**`getElementsByName`**
+
+该方法始终返回一个数组，其中是所有通过元素 ID 匹配到的元素。
+
+```javascript
+var myElements1 = elements.getElementsByName('myGroup'); // 返回一个包含组元素的数组
+var myElements2 = elements.getElementsByName('myButton1', 'myButton2'); // 返回一个包含两个 button 元素的数组
+```
+
+也可以按以下形式获取：
+
+```javascript
+var myElements1 = elements.getElementsByName(['myGroup']); // 返回一个包含 group 元素的数组
+var myElements2 = elements.getElementsByName(['myGroup', 'myButton2']); // 返回一个包含 group 和 button 元素的数组
+```
+
+3、**`getElementsByType`**
+
+该方法始终返回一个数组，其中是所有通过元素类型名称匹配到的元素。
+
+```javascript
+var myElements1 = elements.getElementsByType('button'); // 返回一个包含两个 button 元素的数组
+var myElements2 = elements.getElementsByType('group'); // 返回一个包含 group 元素的数组
+var myElements3 = elements.getElementsByType('group', 'button'); // 返回一个包含 group 元素和 2 个 button 元素的数组
+```
+
+也可以按以下形式获取：
+
+```javascript
+var myElements = elements.getElementsByType(['group', 'button']); // 返回一个包含 group元素和 2 个 button 元素的数组
+```
+
+使用链式调用：
+
+```javascript
+var myButtons = elements.getElementById('group').getElementsByType('button'); // 返回一个包含 2 个 button 元素的数组
+```
+
+
+
+### 使用对象点语法读取元素
 
 我们知道，TreeUI 解析后的返回值是一个对象，既然是对象，那必然可以按对象的方式进行读取：
 
@@ -606,7 +671,7 @@ var myButton1 = myGroup.myButton1;
 var myButton2 = elements.myGroup.myButton2;
 ```
 
-当然，也可以使用中括号，这在节点名称是个变量的时候特别有用：
+当然，也可以使用中括号，这在元素 ID 是个变量的时候特别有用：
 
 ```javascript
 var index = [1, 2];
@@ -638,7 +703,7 @@ var myButton1 = elements.findElement('myButton1');
 var myButton2 = elements.findElement('myButton2');
 ```
 
-⚠️ `findElement` 方法始终返回第一次匹配到的节点名称对应的元素，而不是全部，所以，请始终保持节点名称的唯一性。
+⚠️ `findElement` 方法始终返回第一次匹配到的元素 ID 对应的元素，而不是全部，所以，请始终保持元素 ID 的唯一性。
 
 
 
@@ -682,7 +747,7 @@ Tree.parse({ button1: { style: { onClick: foo } } });
 
 # 参数
 
-TreeUI 直接映射了 ScriptUI 的参数，**仅将第一个参数由原本的元素类型名称改为了节点名称**。
+TreeUI 直接映射了 ScriptUI 的参数，**仅将第一个参数由原本的元素类型名称改为了元素 ID **。
 
 以 button 控件在官方文档中的签名为例：
 
@@ -690,7 +755,7 @@ TreeUI 直接映射了 ScriptUI 的参数，**仅将第一个参数由原本的�
 w.add ("button" [, bounds, text, creation_properties}]);
 ```
 
-⚠️ 字符串 `"button"` 就是元素类型名称，在 TreeUI 中，**这个位置的参数将被用于定义元素节点名称**，而不再是元素类型名称。
+⚠️ 字符串 `"button"` 就是元素类型名称，在 TreeUI 中，**这个位置的参数将被用于定义元素元素 ID **，而不再是元素类型名称。
 
 | 参数名称       | 描述                                                         |
 | -------------- | ------------------------------------------------------------ |
@@ -712,13 +777,13 @@ window.show();
 var window = Tree.parse({ button: ['myButton', [0, 0, 100, 25], '按钮'] });
 ```
 
-你会发现 最后一个叫 `creation_props` 的参数，在以上示例中并没有被使用，那是因为 button 的 `creation_props` 只有一个叫 name 的可配置属性，而这个 name 就是元素的节点名称，所以，只需要按照 TreeUI 的规则，在数组的第一个元素位置定义它即可，无需重复定义，虽然以下的写法是可以的，但没必要：
+你会发现 最后一个叫 `creation_props` 的参数，在以上示例中并没有被使用，那是因为 button 的 `creation_props` 只有一个叫 name 的可配置属性，而这个 name 就是元素的 ID ，所以，只需要按照 TreeUI 的规则，在数组的第一个元素位置定义它即可，无需重复定义，虽然以下的写法是可以的，但没必要：
 
 ```javascript
 var window = Tree.parse({ button: ['myButton', [0, 0, 100, 25], '按钮', { name: 'my_button' }] });
 ```
 
-⚠️ 以上操作会导致先定义的节点名称 `myButton` 被后定义的 `my_button` 覆盖。
+⚠️ 以上操作会导致先定义的元素 ID  `myButton` 被后定义的 `my_button` 覆盖。
 
 如果一个元素的 creation_props 具有 name 之外的可配置属性，就可以专门用上它了，下面以 edittext 为例，通过[查阅](https://extendscript.docsforadobe.dev/user-interface-tools/control-objects.html#edittext)官方文档，我们得知 editetext  除了 name ，一共有 6 个可配置属性，如果在 TreeUI 中把它们全都用上，就是这样：
 
@@ -828,8 +893,8 @@ Tree.parse({ roundbutton: [] });
 与 ScriptUI 现有的按钮一样，自定义按钮的传参顺序依次为：
 
 ```javaScript
-rectbutton: [节点名称, 按钮大小, 按钮文字, {创建属性}]
-roundbutton: [节点名称, 按钮大小, 按钮文字, {创建属性}]
+rectbutton: [元素 ID , 按钮大小, 按钮文字, {创建属性}]
+roundbutton: [元素 ID , 按钮大小, 按钮文字, {创建属性}]
 ```
 
 按钮的外观配置主要指对于`{创建属性}`的配置，它是一个对象，并具有以下可配置属性：
@@ -997,23 +1062,19 @@ var mainWindow = Tree.parse({
 
 # 属性
 
-### Tree.version
+## Tree.version
 
 类型：`String`
 
 只读。一个包含 TreeUI 版本信息的字符串。
 
-
-
-### Tree.context
+## Tree.context
 
 类型：`Global Object`
 
 只写。一个指向当前脚本运行上下文的对象。
 
-
-
-### Tree.layoutMode
+## Tree.layoutMode
 
 类型：`Number`
 
@@ -1029,7 +1090,7 @@ var mainWindow = Tree.parse({
 
 # 方法
 
-### Tree.parse()
+## Tree.parse()
 
 `Tree.parse(source)`
 
@@ -1039,7 +1100,35 @@ var mainWindow = Tree.parse({
 
 返回一个 `window` 对象。当 source 不是对象时，返回 null 。
 
+## Container.prototype.getElementById()
 
+`container.parse(id)`
+
+| 参数 | 类型   | 描述                                                         |
+| ---- | ------ | ------------------------------------------------------------ |
+| id   | String | **`id`**是大小写敏感的字符串，代表了所要查找的元素的唯一 ID。 |
+
+返回一个匹配到 ID 的 SciptUI `Element` 对象。若在当前容器下没有找到，则返回 null。
+
+## Container.prototype.getElementsByName()
+
+`container.getElementsByName(names)`
+
+| 参数  | 类型            | 描述                                                 |
+| ----- | --------------- | ---------------------------------------------------- |
+| names | String 或 Array | names 是一个数组，代表了索要查找的元素的多个唯一ID。 |
+
+返回匹配到 ID 的 SciptUI `Element` 对象集合。若在当前容器下没有找到，则返回 null。
+
+## Container.prototype.getElementsByType()
+
+`container.getElementsByType(types)`
+
+| 参数  | 类型            | 描述                                            |
+| ----- | --------------- | ----------------------------------------------- |
+| types | String 或 Array | type 是一个数组，代表了索要查找的元素的多个类型 |
+
+返回类型匹配的 SciptUI `Element` 对象集合。若在当前容器下没有找到，则返回 null。
 
 # 代码示例
 
@@ -1051,7 +1140,7 @@ Tree.parse({ button: '' });
 
 
 
-##  添加节点名称并设置事件
+##  添加元素 ID 并设置事件
 
 ```javascript
 var elements = Tree.parse({
