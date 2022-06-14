@@ -1102,7 +1102,7 @@ var mainWindow = Tree.parse({
 
 ## Container.prototype.getElementById()
 
-`container.parse(id)`
+`container.getElementById(id)`
 
 | 参数 | 类型   | 描述                                                         |
 | ---- | ------ | ------------------------------------------------------------ |
