@@ -340,7 +340,7 @@ TreeUI 始终使用对象键值对（我们通常叫对象的属性与值）描�
 
 ```
 {
-    editetext: [],
+    edittext: [],
     slider: [],
 }
 ```
@@ -787,7 +787,7 @@ var window = Tree.parse({ button: ['myButton', [0, 0, 100, 25], '按钮', { name
 
 ⚠️ 以上操作会导致先定义的元素 ID  `myButton` 被后定义的 `my_button` 覆盖。
 
-如果一个元素的 creation_props 具有 name 之外的可配置属性，就可以专门用上它了，下面以 edittext 为例，通过[查阅](https://extendscript.docsforadobe.dev/user-interface-tools/control-objects.html#edittext)官方文档，我们得知 editetext  除了 name ，一共有 6 个可配置属性，如果在 TreeUI 中把它们全都用上，就是这样：
+如果一个元素的 creation_props 具有 name 之外的可配置属性，就可以专门用上它了，下面以 edittext 为例，通过[查阅](https://extendscript.docsforadobe.dev/user-interface-tools/control-objects.html#edittext)官方文档，我们得知 edittext  除了 name ，一共有 6 个可配置属性，如果在 TreeUI 中把它们全都用上，就是这样：
 
 ```javascript
 var window = Tree.parse({
