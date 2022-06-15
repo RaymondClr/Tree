@@ -1,4 +1,4 @@
-//@include "../tree.min.js"
+//@include "../tree.min.jsx"
 
 function _arrayEach(array, iteratee) {
     var index = -1;
@@ -223,12 +223,13 @@ var elements = Tree.parse({
     },
 });
 
-_arrayEach(elements.getElementsByType('edittext', 'statictext', 'button'), function (element) {
-    element.text = 'YOOOO';
-});
+$.writeln(elements.getElementById('transition').text);
+// _arrayEach(elements.getElementsByType('edittext', 'statictext', 'button'), function (element) {
+//     element.text = 'YOOOO';
+// });
 
-_arrayEach(elements.getElementsByType('slider'), function (element) {
-    element.value = 0;
-});
+// _arrayEach(elements.getElementsByType('slider'), function (element) {
+//     element.value = 0;
+// });
 
-elements.getElementById('direction').selection = 1;
+// elements.getElementById('direction').selection = 1;

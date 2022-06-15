@@ -8,7 +8,7 @@ var Tree = function () {
 
     var TREE = {};
 
-    var VERSION = '0.3.4';
+    var VERSION = '0.3.5';
 
     var INFINITY = 1 / 0;
 
@@ -86,7 +86,7 @@ var Tree = function () {
     var reCombination = /[CGMNTW][ABDEFGHIKNOPQRSUVXYZ]|[DK]J|[VL][LJ]|UT/,
         reIsContainer = /[DGKLNTUV]/,
         reIsListItemContainer = /[DKLV]/,
-        reIsSelectableContainer = /[DKUV]/,
+        reIsSelectableElement = /[DKUV]/,
         reIsCustomControl = /[XYZ]/,
         reIsCustomButton = /[XY]/,
         reIsNativeContainer = /[GNTU]/,
@@ -516,8 +516,8 @@ var Tree = function () {
         var style = getElementStyle(value);
         var container = nativeAddContainer(container, type, wrapElementParam(value, type));
 
-        if (isSelectableContainer(type) && _has(style, 'selection')) {
-            collector.selectableContainer.push({ container: container, itemIndex: style.selection });
+        if (isSelectableElement(type) && _has(style, 'selection')) {
+            collector.selectableElement.push({ container: container, itemIndex: style.selection });
             return _assign(container, _unset(style, 'selection'));
         }
 
@@ -538,7 +538,7 @@ var Tree = function () {
     function addNodeContainer(container, value, type, collector) {
         var style = getElementStyle(value);
         var node = nativeAddNode(container, getListItemParam(value));
-        if (style.expanded) collector.nodes.push(node);
+        if (style.expanded) collector.nodeItems.push(node);
         return _assign(node, _unset(style, 'expanded'));
     }
 
@@ -612,8 +612,8 @@ var Tree = function () {
 
         baseEachSource(resource, container, addContainer, addControl, collector);
 
-        selectListItem(collector.selectableContainer);
-        expandTreeViewNodes(collector.nodes);
+        selectChildItem(collector.selectableElement);
+        expandTreeViewNodes(collector.nodeItems);
 
         return container;
     }
@@ -762,8 +762,8 @@ var Tree = function () {
     }
 
     function ElementCollector() {
-        this.nodes = [];
-        this.selectableContainer = [];
+        this.nodeItems = [];
+        this.selectableElement = [];
     }
 
     function escapeNumber(string) {
@@ -988,8 +988,8 @@ var Tree = function () {
         return event.button === MOUSE_RIGHT_CLICK_FLAG;
     }
 
-    function isSelectableContainer(type) {
-        return reIsSelectableContainer.test(CONTROL_TYPE_FLAG[type]);
+    function isSelectableElement(type) {
+        return reIsSelectableElement.test(CONTROL_TYPE_FLAG[type]);
     }
 
     function isTabbedpanel(type) {
@@ -1087,8 +1087,8 @@ var Tree = function () {
         return container;
     }
 
-    function selectListItem(selectableContainer) {
-        _arrayEach(selectableContainer, function (value) {
+    function selectChildItem(selectableElement) {
+        _arrayEach(selectableElement, function (value) {
             var container = value.container;
             var itemIndex = value.itemIndex;
             if (isTabbedpanel(container.type)) return (container.selection = value.itemIndex);
