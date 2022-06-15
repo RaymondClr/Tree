@@ -8,7 +8,7 @@ var Tree = function () {
 
     var TREE = {};
 
-    var VERSION = '0.3.3';
+    var VERSION = '0.3.4';
 
     var INFINITY = 1 / 0;
 
@@ -785,6 +785,12 @@ var Tree = function () {
         return rawWidth / ((textNum + PS_WIDTH_MEASURE_FACTOR) / textNum);
     }
 
+    function freezeProperty(object, property) {
+        object.watch(property, function (name, oldValue, newValue) {
+            return oldValue;
+        });
+    }
+
     function getBridgeTalk(object) {
         return !!object && isBridgeTalkObject(object.BridgeTalk) && object.BridgeTalk;
     }
@@ -1123,6 +1129,9 @@ var Tree = function () {
             prototype.getElementById = getElementsById;
             prototype.getElementsByName = getElementsByName;
             prototype.getElementsByType = getElementsByType;
+            freezeProperty(prototype, 'getElementById');
+            freezeProperty(prototype, 'getElementsByName');
+            freezeProperty(prototype, 'getElementsByType');
         });
     }
 
