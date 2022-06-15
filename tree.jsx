@@ -8,7 +8,7 @@ var Tree = function () {
 
     var TREE = {};
 
-    var VERSION = '0.3.2';
+    var VERSION = '0.3.3';
 
     var INFINITY = 1 / 0;
 
@@ -191,7 +191,7 @@ var Tree = function () {
         enableStroke: _isBoolean,
         fontName: _isString,
         fontStyle: isFontStyleFlag,
-        fontSize: isBetween(1, 24),
+        fontSize: isBetween(1, 1000),
         fontOffset: [_isNumber, _isNumber],
         fontColor: [isHex, isHex, isHex, isHex],
         fillColor: [isHex, isHex, isHex, isHex],
@@ -517,7 +517,7 @@ var Tree = function () {
         var container = nativeAddContainer(container, type, wrapElementParam(value, type));
 
         if (isSelectableContainer(type) && _has(style, 'selection')) {
-            collector.listContainer.push({ container: container, itemIndex: style.selection });
+            collector.selectableContainer.push({ container: container, itemIndex: style.selection });
             return _assign(container, _unset(style, 'selection'));
         }
 
@@ -612,7 +612,7 @@ var Tree = function () {
 
         baseEachSource(resource, container, addContainer, addControl, collector);
 
-        selectListItem(collector.listContainer);
+        selectListItem(collector.selectableContainer);
         expandTreeViewNodes(collector.nodes);
 
         return container;
@@ -628,7 +628,7 @@ var Tree = function () {
     function buildSingletonWindow(resource, context, showWindow, layoutMode) {
         var container = null;
         return function () {
-            if (isInvisibleContainer(container)) container = bulidElements(resource, context);
+            if (isInvisibleContainer(container) || IS_PS_HOST) container = bulidElements(resource, context);
             initLayout(container, layoutMode);
             if (isWindow(container) && showWindow) container.show();
             return container;
@@ -763,7 +763,7 @@ var Tree = function () {
 
     function ElementCollector() {
         this.nodes = [];
-        this.listContainer = [];
+        this.selectableContainer = [];
     }
 
     function escapeNumber(string) {
@@ -1081,8 +1081,8 @@ var Tree = function () {
         return container;
     }
 
-    function selectListItem(listContainer) {
-        _arrayEach(listContainer, function (value) {
+    function selectListItem(selectableContainer) {
+        _arrayEach(selectableContainer, function (value) {
             var container = value.container;
             var itemIndex = value.itemIndex;
             if (isTabbedpanel(container.type)) return (container.selection = value.itemIndex);

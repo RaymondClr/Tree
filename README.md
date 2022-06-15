@@ -587,7 +587,7 @@ var elements = Tree.parse({
 
 ### 使用 TreeUI 实现的 getElement 方法（推荐）
 
-TreeUI 在 ScriptUI 所有容器构造器的原型上实现了一组获取元素的方法，一共 3 种：
+TreeUI 在 ScriptUI 所有容器构造器的原型上实现了一组获取元素的方法，一共有 3 种：
 
 我们通过一组已经被解析完成的元素，分别演示它们的用法：
 
@@ -604,6 +604,8 @@ var elements = Tree.parse({
 
 1、**`getElementById`**
 
+该方法始终返回第一次通过元素 ID 匹配到的元素。
+
 ```javascript
 var myGroup = elements.getElementById('myGroup'); // 返回一个 group 元素
 var myButton1 = myGroup.getElementById('myButton1'); // 返回一个按钮元素
@@ -614,7 +616,7 @@ var myButton2 = elements.getElementById('myButton2'); // 返回一个按钮元�
 
 2、**`getElementsByName`**
 
-该方法始终返回一个数组，其中是所有通过元素 ID 匹配到的元素。
+该方法始终返回一个数组，其中是所有通过元素 ID 匹配到的元素。当元素 ID 存在重复时，仅收集第一次匹配到的元素。收集顺序与 TreeUI 解析顺序一致，所以返回值中的元素顺序和传参顺序无关。
 
 ```javascript
 var myElements1 = elements.getElementsByName('myGroup'); // 返回一个包含组元素的数组
@@ -906,7 +908,7 @@ roundbutton: [元素 ID , 按钮大小, 按钮文字, {创建属性}]
 | enableStroke  | `Boolean`                  | true 或 false                                                | 是否启用描边 |
 | fontName      | `String`                   | 字体名称字符串                                               | 字体         |
 | fontStyle     | `Boolean` 或 `Number`      | 0 ≤ value ≤ 3 或[特定字符串](https://extendscript.docsforadobe.dev/user-interface-tools/scriptui-class.html?highlight=ITALIC#scriptui-fontstyle) | 字体样式     |
-| fontSize      | `Number`                   | 1 ≤ value ≤ 24                                               | 文字大小     |
+| fontSize      | `Number`                   | 1 ≤ value ≤ 1000                                             | 文字大小     |
 | fontOffset    | `2 Item Array`             | -INFINITY ≤ value ≤ INFINITY                                 | 文字偏移量   |
 | fontColor     | `4 Item Array` 或 `String` | Hex 字符串                                                   | 文字颜色     |
 | fillColor     | `4 Item Array` 或 `String` | Hex 字符串                                                   | 填充颜色     |
@@ -1039,6 +1041,8 @@ window.show()
 类型：`Boolean`
 
 默认为 false。单例模式。启用后 TreeUI 返回一个方法，调用该方法可创建单例窗口，无论调用该方法多少次，窗口只会被创建一次，特别适用于构建脚本的参数配置面板。
+
+⚠ PhotoShop 不支持真正意义上的单例模式，当宿主为 PhotoShop 时，TreeUI 每次都会重新渲染一次窗口，这是 PhotoShop 自身导致的问题。
 
 以下示例展示了单例模式的用法：
 
