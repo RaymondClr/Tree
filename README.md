@@ -791,7 +791,7 @@ var window = Tree.parse({ button: ['myButton', [0, 0, 100, 25], '按钮', { name
 
 ```javascript
 var window = Tree.parse({
-    editetext: [
+    edittext: [
         'myEditText',
         [0, 0, 100, 25],
         '按钮',
