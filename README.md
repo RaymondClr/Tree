@@ -585,8 +585,6 @@ var elements = Tree.parse({
 
 ⚠️ 只有在定义了元素 ID 的情况下，元素才能够被读取。
 
-
-
 ### 使用 TreeUI 实现的 getElement 方法（推荐）
 
 TreeUI 在 ScriptUI 所有容器构造器的原型上实现了一组获取元素的方法，一共有 3 种：
@@ -711,7 +709,7 @@ var myButton2 = elements.findElement('myButton2');
 
 ### 注意事项
 
-⚠️ `Ps` 和 `Id` 在元素被渲染后，也就是在使用了 show() 方法后，会发生阻塞，这将导致在 show() 之后对元素的所有操作都不会得到处理。
+⚠️ 当主容器窗口类型不是 palette 时，或者像 `Ps` 和 `Id` 这种完全不支持 palette 的宿主，在元素被渲染后，也就是在使用了 show() 方法后，会发生阻塞，这将导致在 show() 之后对元素的所有操作都不会得到处理。
 
 我们通过一个示例来说明这个问题：
 
@@ -723,7 +721,7 @@ var myButton1 = elements.getElementById('myButton1');
 myButton1.text = 'YOOO';
 ```
 
-以上代码在`Ps` 或 `Id` 中执行后，会弹出一个模态窗口，但后续对于元素 text 属性的修改将不会生效，你只能看到一个空白的按钮。
+以上代码在主容器窗口类型为 dialog 或 window时 ，执行后会弹出一个模态窗口，但后续对于元素 text 属性的修改将不会生效，你只能看到一个空白的按钮。
 
 但我们可以通过延迟应用 show() 方法，即通过 TreeUI 的窗口配置属性 show 来解决这个问题：
 
