@@ -1,4 +1,4 @@
-//@include "../tree.jsx"
+//@include "../tree.min.jsx"
 
 Tree.parse({
     param: [, , , { resizeable: true }],

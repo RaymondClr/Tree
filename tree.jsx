@@ -8,7 +8,7 @@ var Tree = function () {
 
     var TREE = {};
 
-    var VERSION = '0.3.5';
+    var VERSION = '0.3.6';
 
     var INFINITY = 1 / 0;
 
@@ -550,18 +550,15 @@ var Tree = function () {
         return defaultParam;
     }
 
-    function baseEachElement(container, accumulator, breaker, predicate) {
-        var containers = [];
-        var isDone = _arraySome(container.children, function (element) {
-            if (isNativeContainer(element.type)) containers.push(element);
-            if (predicate(element)) accumulator.push(element);
-            return breaker(accumulator);
-        });
-
-        if (isDone) return;
-
-        _arrayEach(containers, function (container) {
-            baseEachElement(container, accumulator, breaker, predicate);
+    function baseEachElement(containers, accumulator, breaker, predicate) {
+        return _arraySome(containers, function (container) {
+            var _containers = [];
+            var isDone = _arraySome(container.children, function (element) {
+                if (isNativeContainer(element.type)) _containers.push(element);
+                if (predicate(element)) accumulator.push(element);
+                return breaker(accumulator);
+            });
+            return isDone ? true : baseEachElement(_containers, accumulator, breaker, predicate);
         });
     }
 
@@ -817,7 +814,7 @@ var Tree = function () {
             return accumulator.length > 0;
         }
 
-        baseEachElement(this, result, breaker, function (element) {
+        baseEachElement([this], result, breaker, function (element) {
             var elementId = baseGetElementId(element);
             if (_isNil(elementId)) return false;
             return targetId === elementId;
@@ -835,7 +832,7 @@ var Tree = function () {
             return targetNames.length === seen.length;
         }
 
-        baseEachElement(this, result, breaker, function (element) {
+        baseEachElement([this], result, breaker, function (element) {
             var elementId = baseGetElementId(element);
             if (_isNil(elementId)) return false;
             return _contains(targetNames, elementId) && !_contains(seen, elementId) && seen.push(elementId);
@@ -848,7 +845,7 @@ var Tree = function () {
         var targetTypes = wrapFindElementInput(arguments);
         var result = [];
 
-        baseEachElement(this, result, _stubFalse, function (element) {
+        baseEachElement([this], result, _stubFalse, function (element) {
             return _contains(targetTypes, element.type);
         });
 
